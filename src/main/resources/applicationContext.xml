@@ -33,7 +33,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     </bean>
 
     <!--定义MyBatisPlus的全局配置策略-->
-    <bean id ="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+    <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
         <property name="idType" value="0"></property>
         <property name="tablePrefix" value="tbl_"></property>
 

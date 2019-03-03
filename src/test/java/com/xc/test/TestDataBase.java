@@ -1,8 +1,10 @@
 package com.xc.test;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.xc.bean.Employee;
 import com.xc.mapper.EmployeeMapper;
+import jdk.management.resource.internal.inst.SocketOutputStreamRMHooks;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,7 +13,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: TestDataBase
@@ -60,13 +64,14 @@ public class TestDataBase {
     }
 
     @Test
-    public void testSelectById(){
+    public void testSelectById() {
         Employee employee = employeeMapper.selectById(7);
         System.out.println(employee);
 
     }
+
     @Test
-    public void testSelectOne(){
+    public void testSelectOne() {
         Employee e = new Employee();
         e.setLastName("老王");
         Employee employee = employeeMapper.selectOne(e);
@@ -74,15 +79,33 @@ public class TestDataBase {
     }
 
     @Test
-    public void testSelectBatch(){
-        List<Integer> idList=new ArrayList<Integer>();
-        for(int i=0;i<8;i++){
+    public void testSelectBatch() {
+        List<Integer> idList = new ArrayList<Integer>();
+        for (int i = 0; i < 8; i++) {
             idList.add(i);
         }
         List<Employee> employees = employeeMapper.selectBatchIds(idList);
-        for(Employee e:employees){
+        for (Employee e : employees) {
             System.out.println(e);
         }
 
     }
+
+    @Test
+    public  void testSelectByMap(){
+        Map<String,Object> mp=new HashMap<>();
+        mp.put("last_name","老王");
+        List<Employee> employees = employeeMapper.selectByMap(mp);
+        System.out.println(employees);
+    }
+
+    @Test
+    public  void testSelectByPage(){
+        List<Employee> employees = employeeMapper.selectPage(new Page<Employee>(2, 2), null);
+        for(Employee e:employees){
+            System.out.println(e);
+
+        }
+    }
+
 }
