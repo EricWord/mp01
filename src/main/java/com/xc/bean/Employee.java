@@ -1,43 +1,33 @@
 package com.xc.bean;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
-
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
 /**
- * @ClassName: Employee
- * @Description: 员工信息
- * @Author: Eric
- * @Date: 2019/3/3 0003
- * @Email: xiao_cui_vip@163.com
+ * <p>
+ * 
+ * </p>
+ *
+ * @author Eric
+ * @since 2019-03-04
  */
-//@TableName(value = "tbl_employee")
+@TableName("tbl_employee")
 public class Employee extends Model<Employee> {
-    //    @TableId(value = "id",type = IdType.AUTO)
+
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String lastName;
     private String email;
-    private Integer gender;
+    private String gender;
     private Integer age;
 
-    public Employee() {
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
-    public Employee(Integer id, String lastName, String email, Integer gender, Integer age) {
-        this.id = id;
-        this.lastName = lastName;
-        this.email = email;
-        this.gender = gender;
-        this.age = age;
-    }
 
     public Integer getId() {
         return id;
@@ -63,11 +53,11 @@ public class Employee extends Model<Employee> {
         this.email = email;
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -80,13 +70,18 @@ public class Employee extends Model<Employee> {
     }
 
     @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
+
+    @Override
     public String toString() {
         return "Employee{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", gender=" + gender +
-                ", age=" + age +
-                '}';
+        ", id=" + id +
+        ", lastName=" + lastName +
+        ", email=" + email +
+        ", gender=" + gender +
+        ", age=" + age +
+        "}";
     }
 }
