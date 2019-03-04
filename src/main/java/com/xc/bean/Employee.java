@@ -1,8 +1,11 @@
 package com.xc.bean;
 
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.io.Serializable;
 
 /**
  * @ClassName: Employee
@@ -12,8 +15,8 @@ import com.baomidou.mybatisplus.enums.IdType;
  * @Email: xiao_cui_vip@163.com
  */
 //@TableName(value = "tbl_employee")
-public class Employee {
-//    @TableId(value = "id",type = IdType.AUTO)
+public class Employee extends Model<Employee> {
+    //    @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
     private String lastName;
     private String email;
@@ -21,6 +24,11 @@ public class Employee {
     private Integer age;
 
     public Employee() {
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
     }
 
     public Employee(Integer id, String lastName, String email, Integer gender, Integer age) {
