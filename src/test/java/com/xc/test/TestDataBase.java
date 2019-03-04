@@ -1,5 +1,7 @@
 package com.xc.test;
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.xc.bean.Employee;
@@ -8,14 +10,14 @@ import jdk.management.resource.internal.inst.SocketOutputStreamRMHooks;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.annotation.Order;
+import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 
 import javax.sql.DataSource;
+import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName: TestDataBase
@@ -38,16 +40,21 @@ public class TestDataBase {
 
     @Test
     public void testInsert() {
-        Employee employee = new Employee();
-        employee.setAge(25);
-        employee.setEmail("yuebuqun@163.com");
-        employee.setGender(1);
-        employee.setLastName("yuebuqun");
-        Integer num = employeeMapper.insert(employee);
+
 //        System.out.println(num);
         //获取刚插入的数据在数据库中的id
-        Integer id = employee.getId();
-        System.out.println(id);
+//        Integer id = employee.getId();
+//        System.out.println(id);
+        Employee employee = new Employee();
+        for (int i = 0; i < 30; i++) {
+
+            employee.setAge(25 + i);
+            employee.setEmail(i + "yuebuqun@163.com");
+            employee.setGender(1);
+            employee.setLastName("yuebuqun" + i);
+            Integer num = employeeMapper.insert(employee);
+        }
+        System.out.println("批量插入完成！");
 
     }
 
@@ -92,20 +99,101 @@ public class TestDataBase {
     }
 
     @Test
-    public  void testSelectByMap(){
-        Map<String,Object> mp=new HashMap<>();
-        mp.put("last_name","老王");
+    public void testSelectByMap() {
+        Map<String, Object> mp = new HashMap<>();
+        mp.put("last_name", "老王");
         List<Employee> employees = employeeMapper.selectByMap(mp);
         System.out.println(employees);
     }
 
     @Test
-    public  void testSelectByPage(){
+    public void testSelectByPage() {
         List<Employee> employees = employeeMapper.selectPage(new Page<Employee>(2, 2), null);
-        for(Employee e:employees){
+        for (Employee e : employees) {
             System.out.println(e);
 
         }
+    }
+
+    @Test
+    public void testDeleteById() {
+        Integer num = employeeMapper.deleteById(7);
+        System.out.println(num);
+
+    }
+
+    @Test
+    public void testDeleteByMap() {
+        Map<String, Object> mp = new HashMap<>();
+        mp.put("last_name", "yuebuqun");
+        Integer num = employeeMapper.deleteByMap(mp);
+        System.out.println(num);
+    }
+
+    @Test
+    public void testDeleteBatch() {
+        List<Integer> idList = new ArrayList<>();
+        for (int i = 15; i < 21; i++) {
+            idList.add(i);
+        }
+        Integer num = employeeMapper.deleteBatchIds(idList);
+        System.out.println(num);
+    }
+
+    @Test
+    public void testSelectByPageWrapper() {
+        List<Employee> lis = employeeMapper.selectPage(new Page<Employee>(1, 5), new EntityWrapper<Employee>().between("age", 21, 44));
+        for(Employee e:lis){
+            System.out.println(e);
+        }
+    }
+    @Test
+    public  void testSelectList(){
+
+        List<Employee> lis = employeeMapper.selectList(new EntityWrapper<Employee>().like("last_name", "yuebuqun"));
+        for(Employee e:lis){
+            System.out.println(e);
+        }
+
+
+    }
+    @Test
+    public void testEntityWrapperUpdate(){
+        Employee employee = new Employee();
+        employee.setEmail("wangsiis@sina.com");
+        employeeMapper.update(employee,new EntityWrapper<Employee>().eq("last_name","yuebuqun12"));
+
+
+    }
+
+    @Test
+    public void testEntityWrapperDelete(){
+        employeeMapper.delete(new EntityWrapper<Employee>().eq("last_name","yuebuqun13"));
+
+    }
+
+    @Test
+    public void testEntityWrapperOtherFun(){
+        List<Employee> list = employeeMapper.selectList(new EntityWrapper<Employee>()
+                .eq("gender", 1)
+//                .orderBy("age")
+                .orderDesc(Arrays.asList(new String[]{"age"}))
+        );
+        for(Employee em:list){
+            System.out.println(em);
+        }
+
+    }
+    @Test
+    public void testCondition(){
+        List<Employee> list = employeeMapper.selectPage(new Page<Employee>(1, 2), Condition.create()
+                .like("last_name", "yuebuqun")
+        );
+        for(Employee emp:list){
+            System.out.println(emp);
+
+        }
+
     }
 
 }
