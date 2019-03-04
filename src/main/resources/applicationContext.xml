@@ -20,6 +20,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="dataSource" ref="dataSource"></property>
     </bean>
     <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+
     <bean id="sqlSessionFactoryBean" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
@@ -34,14 +35,14 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <bean class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"></bean>
 
                 <!-- 注册执行分析插件 -->
-                <!--<bean class="com.baomidou.mybatisplus.plugins.SqlExplainInterceptor">-->
-                    <!--<property name="stopProceed" value="true"></property>-->
-                <!--</bean>-->
+                <bean class="com.baomidou.mybatisplus.plugins.SqlExplainInterceptor">
+                    <property name="stopProceed" value="true"></property>
+                </bean>
 
                 <!-- 注册性能分析插件 -->
                 <!--<bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">-->
-                    <!--<property name="format" value="true"></property>-->
-                    <!--&lt;!&ndash; <property name="maxTime" value="5"></property> &ndash;&gt;-->
+                <!--<property name="format" value="true"></property>-->
+                <!--&lt;!&ndash; <property name="maxTime" value="5"></property> &ndash;&gt;-->
                 <!--</bean>-->
 
                 <!-- 注册乐观锁插件 -->
@@ -50,7 +51,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
             </list>
 
+
         </property>
+
+
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -61,7 +65,24 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
         <property name="idType" value="0"></property>
         <property name="tablePrefix" value="tbl_"></property>
+        <!--注意下面这个配置是在全局配置中配置-->
+        <!--<property name="sqlInjector" ref="mySqlInjector"></property>-->
+        <!-- 注入逻辑删除 -->
+        <property name="sqlInjector" ref="logicSqlInjector"></property>
+
+        <!-- 注入逻辑删除全局值 -->
+        <property name="logicDeleteValue" value="-1"></property>
+        <property name="logicNotDeleteValue" value="1"></property>
+        <!-- 注入公共字段填充处理器 -->
+        <property name="metaObjectHandler" ref="myMetaObjectHandler"></property>
 
 
     </bean>
+    <!--配置自定义sql注入类-->
+    <bean id="mySqlInjector" class="com.xc.injector.MySqlInjector"></bean>
+
+    <!-- 逻辑删除 -->
+    <bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector"></bean>
+    <!--公共字段处理器-->
+    <bean id="myMetaObjectHandler" class="com.xc.metaObj.MyMetaObject"></bean>
 </beans>

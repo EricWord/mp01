@@ -12,5 +12,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2019-03-04
  */
 public interface EmployeeMapper extends BaseMapper<Employee> {
+    int deleteAll();
 
 }

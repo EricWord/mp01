@@ -49,6 +49,12 @@ public class TestPage {
         employeeMapper.delete(null);
 
     }
+    @Test
+    public void testDeleteAll(){
+        int num = employeeMapper.deleteAll();
+        System.out.println(num);
+
+    }
 
 
 }
