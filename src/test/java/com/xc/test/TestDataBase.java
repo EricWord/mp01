@@ -50,7 +50,7 @@ public class TestDataBase {
 
             employee.setAge(25 + i);
             employee.setEmail(i + "yuebuqun@163.com");
-            employee.setGender(1);
+            employee.setGender("1");
             employee.setLastName("yuebuqun" + i);
             Integer num = employeeMapper.insert(employee);
         }
@@ -64,7 +64,7 @@ public class TestDataBase {
         e.setId(7);
         e.setAge(55);
         e.setEmail("laowang@qq.com");
-        e.setGender(0);
+        e.setGender("0");
         e.setLastName("老王");
         Integer res = employeeMapper.updateById(e);
         System.out.println(res);

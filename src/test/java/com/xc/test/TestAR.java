@@ -26,7 +26,7 @@ public class TestAR {
         emp.setLastName("王者荣耀");
         emp.setAge(33);
         emp.setEmail("wangzhe@163.com");
-        emp.setGender(0);
+        emp.setGender("0");
 
         boolean res = emp.insert();
         System.out.println(res);
@@ -39,7 +39,7 @@ public class TestAR {
         emp.setId(30);
         emp.setAge(32);
         emp.setEmail("chiji@163.com");
-        emp.setGender(0);
+        emp.setGender("0");
         boolean b = emp.updateById();
         System.out.println(b);
     }
